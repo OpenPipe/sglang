@@ -84,8 +84,8 @@ class GenerateReqInput:
             self.parallel_sample_num = self.sampling_params[0].get("n", 1)
             for sp in self.sampling_params:
                 # TODO cope with the case that the parallel_sample_num is different for different samples
-                assert self.parallel_sample_num == sp.get(
-                    "n", 1
+                assert (
+                    self.parallel_sample_num == sp.get("n", 1)
                 ), "The parallel_sample_num should be the same for all samples in sample params."
 
         if self.parallel_sample_num > 1:
@@ -238,10 +238,13 @@ class TokenizedEmbeddingReqInput:
     sampling_params: SamplingParams
 
 
+RewardReqConv = Union[List[List[Dict]], List[Dict], str, List[str]]
+
+
 @dataclass
 class RewardReqInput:
-    # The input prompt in the chat format. It can be a single prompt or a batch of prompts.
-    conv: Union[List[List[Dict]], List[Dict]]
+    # The input prompt. It can be a single prompt or a batch of prompts. Can be either chat format or a string.
+    conv: RewardReqConv
     # The request id.
     rid: Optional[Union[List[str], str]] = None
     # Dummy sampling params for compatibility
